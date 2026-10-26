@@ -1,0 +1,32 @@
+Problem Statement 01 — AI CareerMate
+Smart Career Guidance, Internship & Skill Roadmap System
+Problem Statement
+Students often find it difficult to identify suitable career roles, understand industry-required skills, discover relevant internship opportunities, and create a structured learning roadmap. The proposed system aims to develop an AI-powered career guidance platform that analyzes a student's profile, interests, skills, projects, and career goals to provide personalized career and internship guidance.
+Requirements
+Student registration/login
+Student profile and resume upload
+Education, skills, projects and certifications
+Career interest and target-role selection
+Job/internship information
+Job Description (JD) input or collection
+AI-based career recommendation
+Skill-gap analysis
+Internship/job matching
+Personalized learning roadmap
+AI Analysis
+Analyze student skills and interests
+Identify suitable career roles
+Compare student skills with job/internship requirements
+Identify missing skills
+Recommend technologies and learning resources
+Generate a personalized career roadmap
+Expected Output
+Recommended career roles
+Suitable internship/job opportunities
+Job/role match score
+Existing and missing skills
+Skill-gap report
+Personalized learning roadmap
+Recommended projects and certifications
+Expected Impact
+Help students make better career decisions, identify skill gaps, find relevant internship opportunities, and follow a structured roadmap toward their target career..............Hii buddy, you are the best Prompt engineer, Give me the perfect algorithm for this content, don't Negliciate any line or word in this content, give me the perfect code for this content

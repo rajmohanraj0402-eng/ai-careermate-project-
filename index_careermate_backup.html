@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI CareerMate — Smart Career Guidance, Internship & Skill Roadmap System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>AI CareerMate</h1>
+          <span class="subtitle">Smart Career Guidance, Internship & Skill Roadmap System</span>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <div class="active-student-pill" id="studentPill">
+          <span class="status-dot"></span>
+          <span id="activeStudentName">Aarav Sharma</span>
+          <span class="tag" id="activeStudentCgpa">CGPA: 8.4</span>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="btnResetDemo">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+          Reload Demo Profile
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Navigation Tabs -->
+  <nav class="nav-tabs-wrapper">
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-tab="tab-dashboard">
+        <span class="tab-icon">📊</span> Dashboard
+      </button>
+      <button class="nav-tab" data-tab="tab-profile">
+        <span class="tab-icon">👤</span> Profile & Resume
+      </button>
+      <button class="nav-tab" data-tab="tab-recommendations">
+        <span class="tab-icon">🎯</span> Career Recommendations
+      </button>
+      <button class="nav-tab" data-tab="tab-skillgap">
+        <span class="tab-icon">🔍</span> Skill-Gap Analysis
+      </button>
+      <button class="nav-tab" data-tab="tab-jobs">
+        <span class="tab-icon">💼</span> Internship Matching
+      </button>
+      <button class="nav-tab" data-tab="tab-roadmap">
+        <span class="tab-icon">🗺️</span> Learning Roadmap
+      </button>
+      <button class="nav-tab" data-tab="tab-jd-analyzer">
+        <span class="tab-icon">📝</span> Custom JD Input
+      </button>
+    </div>
+  </nav>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <!-- 1. DASHBOARD TAB -->
+    <section id="tab-dashboard" class="tab-pane active">
+      <div class="hero-banner">
+        <div class="hero-content">
+          <h2>Personalized AI Career Intelligence</h2>
+          <p>Autonomous multi-factor matching, semantic skill gap diagnostic, live internship matching, and step-by-step career acceleration roadmap.</p>
+        </div>
+        <div class="hero-badges">
+          <div class="hero-metric">
+            <span class="metric-label">Target Role</span>
+            <span class="metric-val" id="dashTargetRole">AI / ML Engineer</span>
+          </div>
+          <div class="hero-metric highlight">
+            <span class="metric-label">Target Role Match</span>
+            <span class="metric-val" id="dashMatchPercent">78%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI Summary Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon bg-indigo">🎯</div>
+          <div class="stat-info">
+            <h3>Role Match Score</h3>
+            <p class="stat-number" id="kpiMatchScore">78%</p>
+            <span class="stat-sub" id="kpiTopRoleName">AI / ML Engineer</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon bg-emerald">💡</div>
+          <div class="stat-info">
+            <h3>Verified Skills</h3>
+            <p class="stat-number" id="kpiSkillsCount">10</p>
+            <span class="stat-sub">Across Languages & Frameworks</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon bg-amber">⚠️</div>
+          <div class="stat-info">
+            <h3>Critical Skill Gaps</h3>
+            <p class="stat-number" id="kpiMissingGaps">3</p>
+            <span class="stat-sub">Must bridge for top placement</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon bg-blue">💼</div>
+          <div class="stat-info">
+            <h3>Matching Internships</h3>
+            <p class="stat-number" id="kpiJobsCount">4</p>
+            <span class="stat-sub">High alignment (&gt;60% match)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dual Split Cards -->
+      <div class="dashboard-split">
+        <div class="card">
+          <div class="card-header">
+            <h3>Top Career Recommendations</h3>
+            <button class="btn btn-link" onclick="switchTab('tab-recommendations')">View All &rarr;</button>
+          </div>
+          <div class="card-body">
+            <div id="dashTopRolesList" class="roles-preview-list">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Active Skill Gap Diagnostic</h3>
+            <button class="btn btn-link" onclick="switchTab('tab-skillgap')">Full Report &rarr;</button>
+          </div>
+          <div class="card-body">
+            <div id="dashSkillGapPreview">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. STUDENT PROFILE & RESUME TAB -->
+    <section id="tab-profile" class="tab-pane">
+      <div class="section-intro">
+        <h2>Student Profile & Resume Center</h2>
+        <p>Manage your academic profile, technical competencies, portfolio projects, certifications, and upload or parse your resume directly.</p>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Left: Resume Parser & Upload -->
+        <div class="card">
+          <div class="card-header">
+            <h3>AI Resume Parser & Extraction</h3>
+            <span class="badge badge-purple">Automatic NLP</span>
+          </div>
+          <div class="card-body">
+            <p class="text-muted">Paste your resume text below or upload a plain text file. Our AI extractor recognizes skills, CGPA, degree, and projects, mapping them automatically to your profile.</p>
+            
+            <div class="form-group">
+              <label for="resumeInputText">Resume Plain Text / Content</label>
+              <textarea id="resumeInputText" rows="10" class="form-control" placeholder="Paste your complete resume text here (Education, Skills, Experience, Projects, Certifications)..."></textarea>
+            </div>
+
+            <div class="button-row">
+              <button class="btn btn-primary" id="btnParseResume">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                Extract Profile Entities & Sync
+              </button>
+              <button class="btn btn-secondary" id="btnLoadSampleResume">Insert Sample Resume</button>
+            </div>
+
+            <div id="resumeParseResult" class="resume-results-box hidden"></div>
+          </div>
+        </div>
+
+        <!-- Right: Profile Form & Target Role Selection -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Academic & Career Goal Setup</h3>
+            <button class="btn btn-primary btn-sm" id="btnSaveProfile">Save Profile Changes</button>
+          </div>
+          <div class="card-body">
+            <form id="profileForm">
+              <div class="form-row">
+                <div class="form-group col-6">
+                  <label>Full Name</label>
+                  <input type="text" id="profName" class="form-control" value="Aarav Sharma">
+                </div>
+                <div class="form-group col-6">
+                  <label>Email Address</label>
+                  <input type="email" id="profEmail" class="form-control" value="aarav.sharma@example.edu" readonly>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-6">
+                  <label>Degree & Branch</label>
+                  <input type="text" id="profDegree" class="form-control" value="B.Tech in Computer Science & Engineering">
+                </div>
+                <div class="form-group col-6">
+                  <label>Institution / College</label>
+                  <input type="text" id="profInstitution" class="form-control" value="National Institute of Technology">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-6">
+                  <label>Academic CGPA (Out of 10.0)</label>
+                  <input type="number" step="0.1" min="0" max="10" id="profCgpa" class="form-control" value="8.4">
+                </div>
+                <div class="form-group col-6">
+                  <label>Graduation Year</label>
+                  <input type="number" id="profGradYear" class="form-control" value="2026">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Target Career Role Goal</label>
+                <select id="profTargetRole" class="form-control select-highlight">
+                  <!-- Populated from roles_catalog -->
+                </select>
+                <small class="text-muted">All skill-gap calculations and personalized roadmaps benchmark against this role.</small>
+              </div>
+
+              <div class="form-group">
+                <label>Career Interests (Comma Separated)</label>
+                <input type="text" id="profInterests" class="form-control" value="Artificial Intelligence, Deep Learning, Machine Learning Research">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills, Projects, and Certifications Management Section -->
+      <div class="card mt-4">
+        <div class="card-header">
+          <h3>Technical Skills Portfolio</h3>
+          <div class="add-skill-bar">
+            <input type="text" id="newSkillName" placeholder="Add technical skill (e.g. PyTorch, Docker, React)..." class="form-control input-sm">
+            <select id="newSkillLevel" class="form-control input-sm">
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate" selected>Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+            <button class="btn btn-secondary btn-sm" id="btnAddSkill">+ Add Skill</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="skillsBadgesContainer" class="skills-grid-container">
+            <!-- Populated with skill chips -->
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2col mt-4">
+        <!-- Projects Section -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Academic & Portfolio Projects</h3>
+            <button class="btn btn-outline btn-sm" id="btnOpenAddProject">+ New Project</button>
+          </div>
+          <div class="card-body">
+            <div id="projectsListContainer" class="project-cards-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Certifications Section -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Certifications & Accreditations</h3>
+            <button class="btn btn-outline btn-sm" id="btnOpenAddCert">+ Add Certification</button>
+          </div>
+          <div class="card-body">
+            <div id="certificationsListContainer" class="cert-cards-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. AI CAREER RECOMMENDATION TAB -->
+    <section id="tab-recommendations" class="tab-pane">
+      <div class="section-intro">
+        <h2>AI-Based Career Role Recommendations</h2>
+        <p>Mathematical multi-factor ranking analyzing your core skills, secondary competencies, portfolio project domains, and career interest alignment.</p>
+      </div>
+
+      <div class="filter-actions-bar">
+        <span class="filter-label">Evaluated against industry benchmarks:</span>
+        <button class="btn btn-primary btn-sm" id="btnRefreshRecs">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+          Re-Analyze Career Matches
+        </button>
+      </div>
+
+      <div id="careerRolesContainer" class="cards-grid">
+        <!-- Populated via computeCareerRecommendations() -->
+      </div>
+    </section>
+
+    <!-- 4. SKILL-GAP ANALYSIS TAB -->
+    <section id="tab-skillgap" class="tab-pane">
+      <div class="section-intro">
+        <h2>Deep Semantic Skill-Gap Diagnostic</h2>
+        <p>Fine-grained set-theoretic and semantic comparison identifying existing competencies, critical missing qualifications, and industry severity ratings.</p>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body gap-header-flex">
+          <div class="gap-select-group">
+            <label for="selectGapRole">Benchmark Against Target Entity:</label>
+            <select id="selectGapRole" class="form-control">
+              <!-- Populated with catalog roles -->
+            </select>
+          </div>
+          <button class="btn btn-primary" id="btnRunGapAnalysis">Generate Skill-Gap Diagnostic</button>
+        </div>
+      </div>
+
+      <div id="skillGapReportContent">
+        <!-- Dynamically rendered detailed report -->
+      </div>
+    </section>
+
+    <!-- 5. INTERNSHIP & JOB MATCHING TAB -->
+    <section id="tab-jobs" class="tab-pane">
+      <div class="section-intro">
+        <h2>Internship & Job Opportunity Matcher</h2>
+        <p>Curated and custom job opportunities scored by skills overlap, academic eligibility (CGPA), and domain relevance.</p>
+      </div>
+
+      <div class="job-filters-bar">
+        <div class="filter-group">
+          <label>Filter by Domain:</label>
+          <select id="filterJobDomain" class="form-control input-sm">
+            <option value="All">All Domains</option>
+            <option value="Artificial Intelligence">Artificial Intelligence</option>
+            <option value="Software Development">Software Development</option>
+            <option value="Data & Analytics">Data & Analytics</option>
+            <option value="Cloud & Infrastructure">Cloud & Infrastructure</option>
+            <option value="Cybersecurity">Cybersecurity</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Minimum Match Score:</label>
+          <select id="filterMinScore" class="form-control input-sm">
+            <option value="0">Show All</option>
+            <option value="50">50% +</option>
+            <option value="70">70% + (High Fit)</option>
+            <option value="85">85% + (Top Match)</option>
+          </select>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="loadJobMatches()">Refresh Opportunities</button>
+      </div>
+
+      <div id="jobsContainer" class="jobs-list-container">
+        <!-- Populated with computeJobMatches() -->
+      </div>
+    </section>
+
+    <!-- 6. PERSONALIZED ROADMAP TAB -->
+    <section id="tab-roadmap" class="tab-pane">
+      <div class="section-intro">
+        <h2>Personalized Dynamic Learning Roadmap</h2>
+        <p>Step-by-step milestone timeline sequencing missing skills, curated learning resources, hands-on portfolio projects, and industry certifications.</p>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body gap-header-flex">
+          <div class="gap-select-group">
+            <label for="selectRoadmapRole">Generate Dynamic Roadmap For:</label>
+            <select id="selectRoadmapRole" class="form-control">
+              <!-- Populated with roles -->
+            </select>
+          </div>
+          <button class="btn btn-primary" id="btnGenerateRoadmap">Generate Personalized Roadmap</button>
+        </div>
+      </div>
+
+      <div id="roadmapContentContainer">
+        <!-- Rendered 4-Phase Interactive Roadmap -->
+      </div>
+    </section>
+
+    <!-- 7. CUSTOM JOB DESCRIPTION (JD) INPUT TAB -->
+    <section id="tab-jd-analyzer" class="tab-pane">
+      <div class="section-intro">
+        <h2>Custom Job Description (JD) Input & Analysis</h2>
+        <p>Paste any job description from LinkedIn, Indeed, or campus hiring notices to instantly extract requirements, calculate your match score, and generate a tailored interview sprint.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <form id="customJdForm">
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>Job / Internship Title *</label>
+                <input type="text" id="jdTitle" class="form-control" placeholder="e.g. Associate Machine Learning Engineer" required>
+              </div>
+              <div class="form-group col-6">
+                <label>Hiring Company</label>
+                <input type="text" id="jdCompany" class="form-control" placeholder="e.g. OpenAI / Google / Microsoft / Startup">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-4">
+                <label>Location</label>
+                <input type="text" id="jdLocation" class="form-control" placeholder="e.g. Bengaluru / Remote">
+              </div>
+              <div class="form-group col-4">
+                <label>Type</label>
+                <select id="jdType" class="form-control">
+                  <option value="Internship (3-6 Months)">Internship (3-6 Months)</option>
+                  <option value="Full-Time (Entry Level)">Full-Time (Entry Level)</option>
+                  <option value="Graduate Trainee">Graduate Trainee</option>
+                </select>
+              </div>
+              <div class="form-group col-4">
+                <label>Minimum Required CGPA</label>
+                <input type="number" step="0.1" id="jdMinCgpa" class="form-control" value="7.0">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Full Job Description Text *</label>
+              <textarea id="jdRawText" rows="9" class="form-control" placeholder="Paste the full job specification text here including Responsibilities, Required Qualifications, Technical Stack, and Good-to-have tools..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              Analyze JD & Ingest into Matching Engine
+            </button>
+          </form>
+
+          <div id="customJdResult" class="mt-4 hidden"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-container">
+      <p><strong>AI CareerMate</strong> — Built for Academic & Engineering Project Excellence</p>
+      <p class="text-muted">Empowering students to bridge skill deficiencies, find high-fit internships, and reach career destinations.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
